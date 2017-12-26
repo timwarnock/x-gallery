@@ -44,7 +44,7 @@ function(err, data) {
     for (var key in ARTWORK) {
       if (typeof ARTWORK[key] !== 'function') {
         var ex = ARTWORK[key];
-        msg += "<p>" + ex.title + " :: " + ex.desc + "</p>";
+        msg += "<p>" + ex.title + " :: " + Object.keys(ex.artwork).length + " :: " + ex.desc + "</p>";
       }
     }
     document.getElementById('exhibits').innerHTML = msg;
