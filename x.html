@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>avant.net - x</title>
+<script>
+
+
+var getJSON = function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status === 200) {
+        callback(null, xhr.response);
+      } else {
+        callback(status, xhr.response);
+      }
+    };
+    xhr.send();
+};
+
+
+</script>
+</head>
+<body>
+
+
+<div id="exhibits"></div>
+
+
+<script>
+var ARTWORK = {};
+getJSON('http://avant.net/artwork/json',
+function(err, data) {
+  if (err !== null) {
+    console.log('Something went wrong: ' + err);
+  } else {
+    console.log('That seemed to work');
+    ARTWORK = data;
+
+    var msg = "";
+    for (var key in ARTWORK) {
+      if (typeof ARTWORK[key] !== 'function') {
+        var ex = ARTWORK[key];
+        msg += "<p>" + ex.title + " :: " + ex.desc + "</p>";
+      }
+    }
+    document.getElementById('exhibits').innerHTML = msg;
+  }
+});
+</script>
+
+
+</body>
+</html>
