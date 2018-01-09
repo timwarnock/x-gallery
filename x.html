@@ -1,10 +1,135 @@
 <!DOCTYPE html>
+<!--
+
+
+album browser
+<div class="album_browse">
+<div class="album" id="albumname"><img...><span class="album_desc">...</span></div>
+</div>
+
+image browser
+<div class="image_browse">
+<img...>
+</div>
+
+image view
+cover, click to close (modal)
+
+
+-->
 <html>
 <head>
   <meta charset="utf-8">
   <title>avant.net - x</title>
+<style>
+
+
+.xg_preview {
+  float: left;
+  display: inline-block;
+  height: 200px; width: 200px;
+  background-size: cover;
+  margin: 5px;
+  border: 1px solid black;
+}
+
+
+/* The Modal (background) */
+.modal2,
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.modal2 {
+  z-index: 2;
+}
+
+/* M */
+#xg_browserContent {
+    display: inline-block;
+    background-color: #fefefe;
+    margin: 100px 0 0 10%;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* M */
+#xg_imageContent {
+    display: inline-block;
+    background-color: #fefefe;
+    margin: 80px 0 0 15%;   
+    padding: 20px;
+    border: 1px solid #888;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+</style>
 <script>
 
+
+var ARTWORK = {};
+
+var getPreviewImage = function(ex) {
+  for (var art in ex.artwork) {
+    if (typeof ex.artwork[art] !== 'function') {
+      return ex.name + '/small_img_' + art;
+    }
+  }
+}
+
+
+//modal content
+//    msg += '<div id="xg_browser" class="modal"><div class="xg_browserContent"><span class="close">&times;</span><p>Some text in the Modal..</p></div></div>';
+// todo closeModalBrowser() closeX  
+
+var openModalBrowser = function(name) {
+  var gallery = '<div class="xg_gallery_desc">hello there ' + name + '</div>';
+  var artwork = ARTWORK[name].artwork;
+  for (var art in artwork) {
+    if (typeof artwork[art] !== 'function') {
+      var img = name + '/small_img_' + art;
+      var imgclick = ' onclick="openModalImage(\'' + name + '\',\'' + art + '\')" ';
+      gallery += '<div class="xg_preview" id="xg_' + art + '" style="background-image:url(' + img + ');"' + imgclick + '></div>';
+    }
+  }
+  document.getElementById('xg_browser').style.display = "block";
+  document.getElementById('xg_browserContent').innerHTML = gallery;
+}
+
+// todo image download, arrow buttons, click to close
+var openModalImage = function(name, art) {
+  var artwork = ARTWORK[name].artwork[art];
+  var imghtml = '<div class="xg_image_desc">hello::: ' + artwork.desc + '</div>';
+  var img = name + '/img_' + art;
+  var imgclick = ' onclick="alert(\'' + name + '/img_' + art + '\')" ';
+  imghtml += '<img src="' + img + '"' + imgclick + '>';
+  document.getElementById('xg_image').style.display = "block";
+  document.getElementById('xg_imageContent').innerHTML = imghtml;
+}
 
 var getJSON = function(url, callback) {
     var xhr = new XMLHttpRequest();
@@ -22,6 +147,17 @@ var getJSON = function(url, callback) {
 };
 
 
+window.onclick = function(event) {
+  var modal = document.getElementById('xg_browser');
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+  var modal2 = document.getElementById('xg_image');
+  if (event.target == modal2) {
+    modal2.style.display = "none";
+  }
+}
+
 </script>
 </head>
 <body>
@@ -31,22 +167,22 @@ var getJSON = function(url, callback) {
 
 
 <script>
-var ARTWORK = {};
 getJSON('http://avant.net/artwork/json',
 function(err, data) {
   if (err !== null) {
     console.log('Something went wrong: ' + err);
   } else {
-    console.log('That seemed to work');
     ARTWORK = data;
-
-    var msg = "";
+    var msg = '';
     for (var key in ARTWORK) {
       if (typeof ARTWORK[key] !== 'function') {
         var ex = ARTWORK[key];
-        msg += "<p>" + ex.title + " :: " + Object.keys(ex.artwork).length + " :: " + ex.desc + "</p>";
+        var preview = getPreviewImage(ex);
+        msg += '<div class="xg_preview" id="xg_' + key + '" style="background-image:url(' + preview + ');" onclick="openModalBrowser(\'' + key + '\');"></div>';
       }
     }
+    msg += '<div id="xg_browser" class="modal"><div id="xg_browserContent"></div></div>';
+    msg += '<div id="xg_image" class="modal2"><div id="xg_imageContent"></div></div>';
     document.getElementById('exhibits').innerHTML = msg;
   }
 });
