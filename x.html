@@ -1,20 +1,7 @@
 <!DOCTYPE html>
 <!--
 
-
-album browser
-<div class="album_browse">
-<div class="album" id="albumname"><img...><span class="album_desc">...</span></div>
-</div>
-
-image browser
-<div class="image_browse">
-<img...>
-</div>
-
-image view
-cover, click to close (modal)
-
+prototype of gallery browser
 
 -->
 <html>
@@ -23,6 +10,23 @@ cover, click to close (modal)
   <title>avant.net - x</title>
 <style>
 
+body {
+  font-family: sans-serif;
+}
+
+.xg_gallery_title {
+  font-size: 36px;
+  color: #666;
+}
+.xg_gallery_desc {
+  display: table-caption;
+  caption-side: bottom;
+  color: #888;
+  padding: 10px 10% 10px 8px;
+}
+.xg_gallery_artwork {
+  display: table;
+}
 
 .xg_preview {
   float: left;
@@ -32,6 +36,26 @@ cover, click to close (modal)
   margin: 5px;
   border: 1px solid black;
 }
+.xg_exhibit { /* magnify the exhibit covers */
+  height: 220px;
+  width: 220px;
+}
+
+.xg_preview_screen {
+  height: 100%;
+  width: 100%;
+  color: rgba(255,255,255,0);
+  background-color: rgba(0,0,0,0);
+}
+.xg_preview_screen:hover {
+  color: rgba(255,255,255,0.9);
+  background-color: rgba(0,0,0,0.5);
+}
+.xg_preview_title {
+  font-size: 22px;
+  padding: 15px;
+}
+
 
 
 /* The Modal (background) */
@@ -71,11 +95,21 @@ cover, click to close (modal)
     border: 1px solid #888;
 }
 
+
+.xg_image_download a {
+  text-decoration: none;
+  color: #ccc;
+}
+.xg_image_download a:hover {
+  color: #333;
+}
+
+
 /* The Close Button */
 .close {
     color: #aaaaaa;
     float: right;
-    font-size: 28px;
+    font-size: 38px;
     font-weight: bold;
 }
 
@@ -102,35 +136,55 @@ var getPreviewImage = function(ex) {
 }
 
 
-//modal content
-//    msg += '<div id="xg_browser" class="modal"><div class="xg_browserContent"><span class="close">&times;</span><p>Some text in the Modal..</p></div></div>';
-// todo closeModalBrowser() closeX  
+//close the modal 
+var closeModalBrowser = function() {
+  var modal = document.getElementById('xg_browser');
+  modal.style.display = "none";
+}
+var closeModalImage = function() {
+  var modal2 = document.getElementById('xg_image');
+  modal2.style.display = "none";
+}
 
+// modal browser
 var openModalBrowser = function(name) {
-  var gallery = '<div class="xg_gallery_desc">hello there ' + name + '</div>';
   var artwork = ARTWORK[name].artwork;
+  var title = ARTWORK[name].title;
+  var desc = ARTWORK[name].desc;
+  var gallery = '<span class="close" onclick="closeModalBrowser()">&times;</span><div class="xg_gallery_title">' + title + '</div>';
+  gallery += '<div class="xg_gallery_artwork">';
   for (var art in artwork) {
     if (typeof artwork[art] !== 'function') {
       var img = name + '/small_img_' + art;
       var imgclick = ' onclick="openModalImage(\'' + name + '\',\'' + art + '\')" ';
-      gallery += '<div class="xg_preview" id="xg_' + art + '" style="background-image:url(' + img + ');"' + imgclick + '></div>';
+      gallery += '<div class="xg_preview" id="xg_' + art + '" style="background-image:url(' + img + ');"' + imgclick + '>';
+      gallery += '<div class="xg_preview_screen"><div class="xg_preview_title">' + artwork[art].title + '</div></div></div>';
     }
   }
+  gallery += '<div class="xg_gallery_desc">'+ desc +'</div>';
+  gallery += '</div>';
   document.getElementById('xg_browser').style.display = "block";
   document.getElementById('xg_browserContent').innerHTML = gallery;
 }
 
-// todo image download, arrow buttons, click to close
+// modal image viewer
+// todo arrow buttons, movie player
 var openModalImage = function(name, art) {
   var artwork = ARTWORK[name].artwork[art];
-  var imghtml = '<div class="xg_image_desc">hello::: ' + artwork.desc + '</div>';
+  var imghtml = '<span class="close" onclick="closeModalImage()">&times;</span><div class="xg_gallery_title">' + artwork.title + '</div>';
+  imghtml += '<div class="xg_gallery_artwork">';
   var img = name + '/img_' + art;
-  var imgclick = ' onclick="alert(\'' + name + '/img_' + art + '\')" ';
+  var raw_url = name + '/' + art;
+  var imgclick = ' onclick="closeModalImage()" ';
   imghtml += '<img src="' + img + '"' + imgclick + '>';
+  imghtml += '<div class="xg_gallery_desc">' + artwork.desc + '</div>';
+  imghtml += '<div class="xg_image_download"><a href="'+ raw_url +'" target="_new">download</a></div>';
+  imghtml += '</div>';
   document.getElementById('xg_image').style.display = "block";
   document.getElementById('xg_imageContent').innerHTML = imghtml;
 }
 
+// fetch JSON object from URL
 var getJSON = function(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -146,7 +200,7 @@ var getJSON = function(url, callback) {
     xhr.send();
 };
 
-
+// event listeners
 window.onclick = function(event) {
   var modal = document.getElementById('xg_browser');
   if (event.target == modal) {
@@ -178,7 +232,8 @@ function(err, data) {
       if (typeof ARTWORK[key] !== 'function') {
         var ex = ARTWORK[key];
         var preview = getPreviewImage(ex);
-        msg += '<div class="xg_preview" id="xg_' + key + '" style="background-image:url(' + preview + ');" onclick="openModalBrowser(\'' + key + '\');"></div>';
+        msg += '<div class="xg_preview xg_exhibit" id="xg_' + key + '" style="background-image:url(' + preview + ');" onclick="openModalBrowser(\'' + key + '\');">';
+        msg += '<div class="xg_preview_screen"><div class="xg_preview_title">' + ex.title + '</div></div></div>';
       }
     }
     msg += '<div id="xg_browser" class="modal"><div id="xg_browserContent"></div></div>';
