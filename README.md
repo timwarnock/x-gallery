@@ -3,16 +3,12 @@
 ## todo list
 - [X] art prototype
 - [ ] photo prototype
+- [ ] enhance noscript html with modal
 - [ ] merge art and photo code
 
 
 ### design notes
 
-art gallery vs photo gallery
-+ metadata on individual images vs metadata on gallery only
-+ INDEX text file vs XML (vs JSON?)
-+ otherwise exactly the same
-
-ideal goals
-+ unified JSON-only format 
++ metadata on individual images (art gallery) vs metadata on gallery only (photo archive)
 + legacy XML and INDEX (service.php)
++ unified JSON format 
