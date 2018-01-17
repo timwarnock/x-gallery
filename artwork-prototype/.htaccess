@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteRule ^$ index.html [QSA]
+RewriteRule ^json([^?]*)$ service.php?view=json$1 [QSA]
+RewriteRule ^xml([^?]*)$ service.php?view=xml$1 [QSA]
