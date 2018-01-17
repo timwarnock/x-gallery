@@ -155,7 +155,7 @@ function(err, data) {
   var gallery = '<span class="close" onclick="closeModalBrowser()">&times;</span><div class="xg_gallery_title">' + title + '</div>';
   gallery += '<div class="xg_gallery_artwork">';
   for (var i=0; i < images.length; i++) {
-    art = images[i];
+    art = images[i].replace(/'/g, "\\'");;
     var img = name + '/small_img_' + art;
     var imgclick = ' onclick="openModalImage(\'' + name + '\',\'' + art + '\')" ';
     gallery += '<div class="xg_preview" id="xg_' + art + '" style="background-image:url(' + img + ');"' + imgclick + '>';
