@@ -125,14 +125,10 @@ body {
 <script>
 
 
-var ARTWORK = {};
+var GALLERIES = {};
 
 var getPreviewImage = function(ex) {
-  for (var art in ex.artwork) {
-    if (typeof ex.artwork[art] !== 'function') {
-      return ex.name + '/small_img_' + art;
-    }
-  }
+  return 'http://avant.net/photos/service.php/'+ ex.dir +'.jpg';
 };
 
 
@@ -148,36 +144,39 @@ var closeModalImage = function() {
 
 // modal browser
 var openModalBrowser = function(name) {
-  var artwork = ARTWORK[name].artwork;
-  var title = ARTWORK[name].title;
-  var desc = ARTWORK[name].desc;
+getJSON('http://avant.net/photos/json/'+name,
+function(err, data) {
+  if (err !== null) {
+    console.log('Something went wrong: ' + err);
+  } else {
+  var images = data.images;
+  var title = data.title;
+  var desc = data.desc;
   var gallery = '<span class="close" onclick="closeModalBrowser()">&times;</span><div class="xg_gallery_title">' + title + '</div>';
   gallery += '<div class="xg_gallery_artwork">';
-  for (var art in artwork) {
-    if (typeof artwork[art] !== 'function') {
-      var img = name + '/small_img_' + art;
-      var imgclick = ' onclick="openModalImage(\'' + name + '\',\'' + art + '\')" ';
-      gallery += '<div class="xg_preview" id="xg_' + art + '" style="background-image:url(' + img + ');"' + imgclick + '>';
-      gallery += '<div class="xg_preview_screen"><div class="xg_preview_title">' + artwork[art].title + '</div></div></div>';
-    }
+  for (var i=0; i < images.length; i++) {
+    art = images[i];
+    var img = name + '/small_img_' + art;
+    var imgclick = ' onclick="openModalImage(\'' + name + '\',\'' + art + '\')" ';
+    gallery += '<div class="xg_preview" id="xg_' + art + '" style="background-image:url(' + img + ');"' + imgclick + '>';
+    gallery += '<div class="xg_preview_screen"><div class="xg_preview_title">' + art + '</div></div></div>';
   }
   gallery += '<div class="xg_gallery_desc">'+ desc +'</div>';
   gallery += '</div>';
   document.getElementById('xg_browser').style.display = "block";
   document.getElementById('xg_browserContent').innerHTML = gallery;
-};
+}})};
 
 // modal image viewer
 // todo arrow buttons, movie player
 var openModalImage = function(name, art) {
-  var artwork = ARTWORK[name].artwork[art];
-  var imghtml = '<span class="close" onclick="closeModalImage()">&times;</span><div class="xg_gallery_title">' + artwork.title + '</div>';
+  var imghtml = '<span class="close" onclick="closeModalImage()">&times;</span><div class="xg_gallery_title">' + name + '</div>';
   imghtml += '<div class="xg_gallery_artwork">';
   var img = name + '/img_' + art;
   var raw_url = name + '/' + art;
   var imgclick = ' onclick="closeModalImage()" ';
   imghtml += '<img src="' + img + '"' + imgclick + '>';
-  imghtml += '<div class="xg_gallery_desc">' + artwork.desc + '</div>';
+  imghtml += '<div class="xg_gallery_desc">' + art + '</div>';
   imghtml += '<div class="xg_image_download"><a href="'+ raw_url +'" target="_new">download</a></div>';
   imghtml += '</div>';
   document.getElementById('xg_image').style.display = "block";
@@ -225,20 +224,18 @@ window.onclick = function(event) {
 
 
 <script>
-getJSON('http://avant.net/artwork/json',
+getJSON('http://avant.net/photos/json',
 function(err, data) {
   if (err !== null) {
     console.log('Something went wrong: ' + err);
   } else {
-    ARTWORK = data;
+    GALLERIES = data;
     var msg = '';
-    for (var key in ARTWORK) {
-      if (typeof ARTWORK[key] !== 'function') {
-        var ex = ARTWORK[key];
+    for (var i = 0; i<GALLERIES.length; i++) {
+        var ex = GALLERIES[i];
         var preview = getPreviewImage(ex);
-        msg += '<div class="xg_preview xg_exhibit" id="xg_' + key + '" style="background-image:url(' + preview + ');" onclick="openModalBrowser(\'' + key + '\');">';
+        msg += '<div class="xg_preview xg_exhibit" id="xg_' + ex.dir + '" style="background-image:url(' + preview + ');" onclick="openModalBrowser(\'' + ex.dir + '\');">';
         msg += '<div class="xg_preview_screen"><div class="xg_preview_title">' + ex.title + '</div></div></div>';
-      }
     }
     msg += '<div id="xg_browser" class="modal"><div id="xg_browserContent"></div></div>';
     msg += '<div id="xg_image" class="modal2"><div id="xg_imageContent"></div></div>';
