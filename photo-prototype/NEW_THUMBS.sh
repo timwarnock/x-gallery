@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# redo thumbnails
+#
+# to do in bulk:
+# find . -maxdepth 1 -type d -name "2017*" -exec ./NEW_THUMBS.sh -d {} \;
 
 base=`/bin/pwd`
 UPDATE="0"

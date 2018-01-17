@@ -12,7 +12,7 @@ usage() { echo "$0 usage:" && grep " .)\ #" $0; exit 0; }
 while getopts ":hd:t:y:m:" arg; do
   case $arg in
     d) # Specify directory
-      directory=${OPTARG}
+      directory=$(echo ${OPTARG} | sed 's:/*$::')
       ;;
     t) # Specify subject (title) of gallery
       subject=${OPTARG}
@@ -85,5 +85,9 @@ else
       echo " ** skipping $image"
     fi
   done
+
+  ## clear cache
+  rm -f ../cache/INDEX.json >/dev/null 2>&1
+  rm -f ../cache/${directory#/}".json" >/dev/null 2>&1
 
 fi

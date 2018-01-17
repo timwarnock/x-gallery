@@ -128,7 +128,7 @@ body {
 var GALLERIES = {};
 
 var getPreviewImage = function(ex) {
-  return 'http://avant.net/photos/service.php/'+ ex.dir +'.jpg';
+  return 'http://avant.net/photos/service.php/'+ ex.dir.replace(/\/$/, "") +'.jpg';
 };
 
 
