@@ -2,9 +2,10 @@
 
 ## todo list
 - [X] art prototype
-- [ ] photo prototype
-- [ ] enhance noscript html with modal
+- [X] photo prototype
+- [ ] noscript html with modal
 - [ ] merge art and photo code
+- [ ] touch gestures and navigation
 
 
 ### design notes
