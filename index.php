@@ -48,9 +48,9 @@ if (!file_exists('cache/META.xml')) {
 }
 
 if ($_REQUEST['view'] == 'json') {
-	header('Content-Type: application/json');
-	print( file_get_contents('cache/META.json'));
+  header('Content-Type: application/json');
+  print( file_get_contents('cache/META.json'));
 } else {
-	print( file_get_contents('cache/META.xml'));
+  print( file_get_contents('cache/META.xml'));
 }
 ?>

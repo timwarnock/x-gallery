@@ -133,18 +133,18 @@ var getPreviewImage = function(ex) {
       return ex.name + '/small_img_' + art;
     }
   }
-}
+};
 
 
 //close the modal 
 var closeModalBrowser = function() {
   var modal = document.getElementById('xg_browser');
   modal.style.display = "none";
-}
+};
 var closeModalImage = function() {
   var modal2 = document.getElementById('xg_image');
   modal2.style.display = "none";
-}
+};
 
 // modal browser
 var openModalBrowser = function(name) {
@@ -165,7 +165,7 @@ var openModalBrowser = function(name) {
   gallery += '</div>';
   document.getElementById('xg_browser').style.display = "block";
   document.getElementById('xg_browserContent').innerHTML = gallery;
-}
+};
 
 // modal image viewer
 // todo arrow buttons, movie player
@@ -182,7 +182,7 @@ var openModalImage = function(name, art) {
   imghtml += '</div>';
   document.getElementById('xg_image').style.display = "block";
   document.getElementById('xg_imageContent').innerHTML = imghtml;
-}
+};
 
 // fetch JSON object from URL
 var getJSON = function(url, callback) {
@@ -192,7 +192,11 @@ var getJSON = function(url, callback) {
     xhr.onload = function() {
       var status = xhr.status;
       if (status === 200) {
-        callback(null, xhr.response);
+        var resjson = xhr.response;
+        if (typeof resjson == "string") {
+          resjson = JSON.parse(xhr.response);
+        }
+        callback(null, resjson);
       } else {
         callback(status, xhr.response);
       }
@@ -210,7 +214,7 @@ window.onclick = function(event) {
   if (event.target == modal2) {
     modal2.style.display = "none";
   }
-}
+};
 
 </script>
 </head>
