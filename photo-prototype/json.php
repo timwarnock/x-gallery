@@ -5,7 +5,7 @@
 ##
 ################################################################################
 
-# todo use cache/ (MAKE_GALLERY.sh clears cache)
+
 
 
 
@@ -38,6 +38,8 @@ function getImages($dir) {
 
 
 
+
+
 /* ********************************************************************************
  * list all images for a given album
 
@@ -46,10 +48,11 @@ function getImages($dir) {
 
 
 ******************************************************************************** */
-   if (isset($_REQUEST[album])) {
+if (isset($_REQUEST[album]))
      $album = rtrim($_REQUEST[album], '/');
+
+if (isset($_REQUEST[album]) && !file_exists("cache/$album.json")) {
      $image_array = getImages($album);
-     //$image_array = ls("$album", "img_*.*");
      $index_file = file_get_contents("$album/INDEX");
      if (preg_match("/^date: (.*)$/m", $index_file, $match)) {
         $date = $match[1];
@@ -60,8 +63,7 @@ function getImages($dir) {
      if (preg_match("/\n\n(.*)$/ms", $index_file, $match)) {
         $body = $match[1];
      }
-     header("Content-Type: application/json");
-     print json_encode([
+    file_put_contents("cache/$album.json", json_encode([
        'base' => '/photos',
        'prefix' => 'img_',
        'thumb_prefix' => 'small_img_',
@@ -69,8 +71,8 @@ function getImages($dir) {
        'title' => $subject,
        'date' => $date,
        'desc' => $body,
-       'images' => $image_array ]);
-
+       'images' => $image_array ]));
+}
 
 
 /* ********************************************************************************
@@ -80,7 +82,7 @@ function getImages($dir) {
    -- list all galleres with [dir, title, date, desc]
 
 ******************************************************************************** */
-  } else {
+if (! file_exists("cache/INDEX.json")) {
 
     $ALBUMS = array();
     $indeces = file_get_contents("INDEX_ALL");
@@ -107,10 +109,18 @@ function getImages($dir) {
         $ALBUMS[] = $alb;
       }
     }
-    header("Content-Type: application/json");
-    print json_encode(array_reverse($ALBUMS));
-  }
+    file_put_contents("cache/INDEX.json", json_encode(array_reverse($ALBUMS)));
+}
 
+
+
+if (isset($_REQUEST[album]) && file_exists("cache/$album.json")) {
+  header('Content-Type: application/json');
+  print( file_get_contents("cache/$album.json"));
+} else {
+  header('Content-Type: application/json');
+  print( file_get_contents("cache/INDEX.json"));
+}
 
 
 ?>
