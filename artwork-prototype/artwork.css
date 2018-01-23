@@ -1,0 +1,127 @@
+
+body {
+  font-family: sans-serif;
+}
+
+.xg_gallery_title {
+  font-size: 36px;
+  color: #666;
+}
+.xg_gallery_desc {
+  display: table-caption;
+  caption-side: bottom;
+  color: #888;
+  padding: 10px 10% 10px 8px;
+}
+.xg_gallery_artwork {
+  display: table;
+}
+.xg_gallery_artwork img {
+  width: 100%;
+}
+.xg_preview {
+  float: left;
+  display: inline-block;
+  height: 200px; 
+  width: 200px;
+  background-size: cover;
+  margin: 10px;
+  border: 1px solid black;
+}
+.xg_exhibit { /* magnify the exhibit covers */
+  height: 220px;
+  width: 220px;
+}
+
+.xg_preview_screen {
+  height: 100%;
+  width: 100%;
+  color: rgba(255,255,255,0);
+  background-color: rgba(0,0,0,0);
+  transition: background 0.7s ease-out;
+  
+}
+.xg_preview_screen:hover {
+  color: rgba(255,255,255,1.0);
+  background-color: rgba(0,0,0,0.7);
+}
+.xg_preview_title {
+  font-size: 22px;
+  padding: 15px;
+}
+
+
+
+/* The Modal (background) */
+.modal2,
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+.modal2 {
+  z-index: 2;
+}
+
+/* M */
+#xg_browserContent {
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #888;
+}
+#xg_browserContent_wrap {
+    display: inline-block;
+    margin: 100px 0 0 5%;
+    width: 80%;
+}
+@media only screen and (max-width: 400px) {
+  #xg_browserContent_wrap {
+    margin: 80px 0 0 0;
+  }
+}
+
+/* M */
+#xg_imageContent {
+    display: inline-block;
+    background-color: #fefefe;
+    margin: 80px 0 0 8%;   
+    padding: 20px;
+    border: 1px solid #888;
+}
+@media only screen and (max-width: 400px) {
+  #xg_imageContent {
+    margin: 60px 0 0 0;
+  }
+}
+
+
+.xg_image_download a {
+  text-decoration: none;
+  color: #ccc;
+}
+.xg_image_download a:hover {
+  color: #333;
+}
+
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 38px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
