@@ -42,7 +42,7 @@ this.openModalBrowser = function(name) {
   var desc = ARTWORK[name].desc;
   var gallery = '<div id="xg_browserContent">';
   gallery += '<span class="close" onclick="xga.closeModalBrowser()">&times;</span><div class="xg_gallery_title">' + title + '</div>';
-  gallery += '<div class="xg_gallery_artwork">';
+  gallery += '<div id="xg_gallery_artwork">';
   for (var art in artwork) {
     if (typeof artwork[art] !== 'function') {
       var img = '/artwork/' + name + '/small_img_' + art;
@@ -62,7 +62,7 @@ this.openModalBrowser = function(name) {
 this.openModalImage = function(name, art) {
   var artwork = ARTWORK[name].artwork[art];
   var imghtml = '<span class="close" onclick="xga.closeModalImage()">&times;</span><div class="xg_gallery_title">' + artwork.title + '</div>';
-  imghtml += '<div class="xg_gallery_artwork">';
+  imghtml += '<div id="xg_gallery_artwork">';
   var img = '/artwork/' + name + '/img_' + art;
   var raw_url = '/artwork/' + name + '/' + art;
   var imgclick = ' onclick="xga.closeModalImage()" ';
@@ -154,13 +154,13 @@ this.openExhibits = function(exid) {
     if (typeof artw[key] !== 'function') {
       var ex = artw[key];
       var preview = getPreviewImage(ex);
-      msg += '<div class="xg_preview xg_exhibit" id="xg_' + key + '" style="background-image:url(' + preview + ');"';
+      msg += '<div class="xga xg_preview xg_exhibit" id="xg_' + key + '" style="background-image:url(' + preview + ');"';
       msg += ' onclick="xga.openModalBrowser(\'' + key + '\');">';
       msg += '<div class="xg_preview_screen"><div class="xg_preview_title">' + ex.title + '</div></div></div>';
     }
   }
-  msg += '<div id="xg_browser" class="modal"><div id="xg_browserContent_wrap"></div></div>';
-  msg += '<div id="xg_image" class="modal2"><div id="xg_imageContent"></div></div>';
+  msg += '<div id="xg_browser" class="xga modal"><div id="xg_browserContent_wrap"></div></div>';
+  msg += '<div id="xg_image" class="xga modal2"><div id="xg_imageContent"></div></div>';
   document.getElementById(exid).innerHTML = msg;
 };
 this.preload = function(statusid,statusmsg) {
@@ -183,16 +183,24 @@ this.preload = function(statusid,statusmsg) {
 };
 
 
-// event listeners (to close the modal)
+}; //end xga
+
+
+// event listeners
+// TODO make better (DRY)
 window.onclick = function(event) {
   var modal = document.getElementById('xg_browser');
   if (event.target == modal) {
-    modal.style.display = "none";
+    xga.closeModalBrowser();
   }
   var modal2 = document.getElementById('xg_image');
   if (event.target == modal2) {
-    modal2.style.display = "none";
+    xga.closeModalImage();
+  }
+  var clicke = document.getElementById('xg_gallery_artwork');
+  if (event.target == clicke) {
+    xga.closeModalBrowser();
   }
 };
 
-};
+

@@ -1,8 +1,4 @@
 
-body {
-  font-family: sans-serif;
-}
-
 .xg_gallery_title {
   font-size: 36px;
   color: #666;
@@ -13,10 +9,10 @@ body {
   color: #888;
   padding: 10px 10% 10px 8px;
 }
-.xg_gallery_artwork {
+#xg_gallery_artwork {
   display: table;
 }
-.xg_gallery_artwork img {
+#xg_gallery_artwork img {
   width: 100%;
 }
 .xg_preview {
@@ -77,8 +73,8 @@ body {
 }
 #xg_browserContent_wrap {
     display: inline-block;
-    margin: 100px 0 0 5%;
-    width: 80%;
+    margin: 100px 0 100px 0;
+    width: 100%;
 }
 @media only screen and (max-width: 400px) {
   #xg_browserContent_wrap {
@@ -112,9 +108,10 @@ body {
 
 /* The Close Button */
 .close {
+  margin-top: -10px;
     color: #aaaaaa;
     float: right;
-    font-size: 38px;
+    font-size: 52px;
     font-weight: bold;
 }
 
