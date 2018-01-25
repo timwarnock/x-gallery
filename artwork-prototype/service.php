@@ -49,6 +49,7 @@ if (!file_exists('cache/META.xml')) {
 
 if ($_REQUEST['view'] == 'json') {
   header('Content-Type: application/json');
+  header('Access-Control-Allow-Origin: *');  
   print( file_get_contents('cache/META.json'));
 } else {
   print( file_get_contents('cache/META.xml'));
