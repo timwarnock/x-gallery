@@ -115,9 +115,11 @@ if (! file_exists("cache/INDEX.json")) {
 
 
 if (isset($_REQUEST[album]) && file_exists("cache/$album.json")) {
+  header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
   print( file_get_contents("cache/$album.json"));
 } else {
+  header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
   print( file_get_contents("cache/INDEX.json"));
 }
