@@ -15,11 +15,22 @@ this.getArtwork = function() { return ARTWORK; };
 this.setArtwork = function(data) { ARTWORK = data; };
 
 
+
+this.addCSS = function() {
+  var head = document.head;
+  var link = document.createElement("link");
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  link.href = "http://avant.net/artwork/artwork.css";
+  head.appendChild(link);
+}
+
+
 // private (get preview thumb for an exhibit)
 var getPreviewImage = function(ex) {
   for (var art in ex.artwork) {
     if (typeof ex.artwork[art] !== 'function') {
-      return '/artwork/' + ex.name + '/small_img_' + art;
+      return 'http://avant.net/artwork/' + ex.name + '/small_img_' + art;
     }
   }
 };
@@ -45,7 +56,7 @@ this.openModalBrowser = function(name) {
   gallery += '<div id="xg_gallery_artwork">';
   for (var art in artwork) {
     if (typeof artwork[art] !== 'function') {
-      var img = '/artwork/' + name + '/small_img_' + art;
+      var img = 'http://avant.net/artwork/' + name + '/small_img_' + art;
       var imgclick = ' onclick="xga.openModalImage(\'' + name + '\',\'' + art + '\')" ';
       gallery += '<div class="xg_preview" id="xg_' + art + '" style="background-image:url(' + img + ');"' + imgclick + '>';
       gallery += '<div class="xg_preview_screen"><div class="xg_preview_title">' + artwork[art].title + '</div></div></div>';
@@ -63,8 +74,8 @@ this.openModalImage = function(name, art) {
   var artwork = ARTWORK[name].artwork[art];
   var imghtml = '<span class="close" onclick="xga.closeModalImage()">&times;</span><div class="xg_gallery_title">' + artwork.title + '</div>';
   imghtml += '<div id="xg_gallery_artwork">';
-  var img = '/artwork/' + name + '/img_' + art;
-  var raw_url = '/artwork/' + name + '/' + art;
+  var img = 'http://avant.net/artwork/' + name + '/img_' + art;
+  var raw_url = 'http://avant.net/artwork/' + name + '/' + art;
   var imgclick = ' onclick="xga.closeModalImage()" ';
   imghtml += '<img src="' + img + '"' + imgclick + '>';
   imghtml += '<div class="xg_gallery_desc">' + artwork.desc + '</div>';
