@@ -79,7 +79,7 @@ this.openModalImage = function(name, art) {
   var imgclick = ' onclick="xga.closeModalImage()" ';
   imghtml += '<img src="' + img + '"' + imgclick + '>';
   imghtml += '<div class="xg_gallery_desc">' + artwork.desc + '</div>';
-  imghtml += '<div class="xg_image_download"><a href="'+ raw_url +'" target="_new">download</a></div>';
+  imghtml += '<div class="xg_image_download"><a href="'+ raw_url +'" target="_blank">download</a></div>';
   imghtml += '</div>';
   document.getElementById('xg_image').style.display = "block";
   document.getElementById('xg_imageContent').innerHTML = imghtml;
