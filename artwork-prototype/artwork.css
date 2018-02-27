@@ -9,9 +9,11 @@
   color: #888;
   padding: 10px 10% 10px 8px;
 }
+#xg_gallery_image,
 #xg_gallery_artwork {
   display: table;
 }
+#xg_gallery_image img,
 #xg_gallery_artwork img {
   width: 100%;
 }

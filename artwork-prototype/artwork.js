@@ -23,7 +23,7 @@ this.addCSS = function() {
   link.rel = "stylesheet";
   link.href = "http://avant.net/artwork/artwork.css";
   head.appendChild(link);
-}
+};
 
 
 // private (get preview thumb for an exhibit)
@@ -32,6 +32,57 @@ var getPreviewImage = function(ex) {
     if (typeof ex.artwork[art] !== 'function') {
       return 'http://avant.net/artwork/' + ex.name + '/small_img_' + art;
     }
+  }
+};
+
+
+// private (test to see if video is supported)
+var supports_video = function() {
+  var isMSIE = /*@cc_on!@*/0;
+  if (isMSIE &&
+    !(navigator.userAgent.match(/iPhone/i)) && 
+    !(navigator.userAgent.match(/iPad/i)) && 
+    !(navigator.userAgent.match(/iPod/i)) ) {
+    return true;
+  }
+  return !!document.createElement('video').canPlayType;
+};
+
+function videoize(name, art) {
+  var artwork = ARTWORK[name].artwork[art];
+  if (supports_video() ) {
+    (function () {
+    var el = document.getElementById('xg_gallery_image');
+    var baseURL = 'http://avant.net/artwork/' + name + '/';
+    var newHTML = '';
+    newHTML += '<video id="xgaVid" poster="'+ baseURL + art +'" loop>';
+    if ('webm' in artwork) {
+      newHTML += '<source src="' + baseURL + artwork.webm +'" type="video/webm" />';
+    }
+    if ('mp4' in artwork) {
+      newHTML += '<source src="' + baseURL + artwork.mp4 +'" type="video/mp4" />';
+    }
+    if ('ogv' in artwork) {
+      newHTML += '<source src="' + baseURL + artwork.ogv +'" type="video/ogv" />';
+    }
+    if ('swf' in artwork) {
+      newHTML += '<object type="application/x-shockwave-flash" data="'+ baseURL + artwork.swf +'">'+
+      '<param name="movie" value="'+ baseURL + artwork.swf +'" />'+
+      '<img src="'+ baseURL + art +'" alt="No video playback" title="No video playback" />'+
+      '</object>'; 
+    }
+    newHTML += '</video>';
+    newHTML += '<div class="xg_gallery_desc">' + artwork.desc + '</div>';
+    el.innerHTML = newHTML;
+
+    var video = document.getElementById("xgaVid");
+    // chrome bug, video doesn't autostart without controls
+    video.setAttribute('controls', 'true');
+    video.removeAttribute('controls');
+    video.load();
+    video.play();
+    }()
+    );
   }
 };
 
@@ -73,7 +124,7 @@ this.openModalBrowser = function(name) {
 this.openModalImage = function(name, art) {
   var artwork = ARTWORK[name].artwork[art];
   var imghtml = '<span class="close" onclick="xga.closeModalImage()">&times;</span><div class="xg_gallery_title">' + artwork.title + '</div>';
-  imghtml += '<div id="xg_gallery_artwork">';
+  imghtml += '<div id="xg_gallery_image">';
   var img = 'http://avant.net/artwork/' + name + '/img_' + art;
   var raw_url = 'http://avant.net/artwork/' + name + '/' + art;
   var imgclick = ' onclick="xga.closeModalImage()" ';
@@ -83,6 +134,9 @@ this.openModalImage = function(name, art) {
   imghtml += '</div>';
   document.getElementById('xg_image').style.display = "block";
   document.getElementById('xg_imageContent').innerHTML = imghtml;
+  if ('mp4' in artwork) {
+    videoize(name, art);
+  }
 };
 
 
