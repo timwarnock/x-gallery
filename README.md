@@ -1,4 +1,4 @@
-# x-gallery
+# x-gallery prototype
 
 ## todo list
 - [X] art prototype
