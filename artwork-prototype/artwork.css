@@ -34,14 +34,14 @@
 .xg_preview_screen {
   height: 100%;
   width: 100%;
-  color: rgba(255,255,255,0);
-  background-color: rgba(0,0,0,0);
-  transition: background 0.7s ease-out;
+  color: rgba(255,255,255,0.9);
+  background-color: rgba(0,0,0,0.7);
+  transition: all 0.7s ease-out;
   
 }
 .xg_preview_screen:hover {
-  color: rgba(255,255,255,1.0);
-  background-color: rgba(0,0,0,0.7);
+  color: rgba(255,255,255,0.0);
+  background-color: rgba(0,0,0,0.0);
 }
 .xg_preview_title {
   font-size: 22px;
