@@ -34,13 +34,16 @@
 .xg_preview_screen {
   height: 100%;
   width: 100%;
+  overflow: hidden;
   color: rgba(255,255,255,0.9);
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0,0,0,0.1);
+  text-shadow: black 0 0 8px;
   transition: all 0.7s ease-out;
   
 }
 .xg_preview_screen:hover {
-  color: rgba(255,255,255,0.0);
+  color: rgba(255,255,255,0.1);
+  text-shadow: none;
   background-color: rgba(0,0,0,0.0);
 }
 .xg_preview_title {
