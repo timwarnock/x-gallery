@@ -1,4 +1,6 @@
 # x-gallery prototype
+Image gallery with RESTful API backend. Can load large photo galleries in collapsable modal or directly on a webpage.
+
 
 ## todo list
 - [X] art prototype
