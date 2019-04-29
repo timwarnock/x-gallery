@@ -1,5 +1,5 @@
 # x-gallery prototype
-Image gallery with RESTful API backend. Can load large photo galleries in collapsable modal or directly on a webpage.
+Image gallery with RESTful API backend, and JavaScript frontend. Can load large photo galleries in collapsable modal or directly into any webpage.
 
 
 ## todo list
