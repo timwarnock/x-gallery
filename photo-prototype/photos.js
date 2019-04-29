@@ -16,7 +16,7 @@ this.setGalleries = function(data) { GALLERIES = data; };
 
 // private (get preview thumb for an exhibit)
 var getPreviewImage = function(ex) {
-  return 'http://avant.net/photos/service.php/'+ ex.dir.replace(/\/$/, "") +'.jpg';
+  return 'https://avant.net/photos/service.php/'+ ex.dir.replace(/\/$/, "") +'.jpg';
 };
 
 
@@ -32,7 +32,7 @@ this.closeModalImage = function() {
 
 // public (modal browser)
 this.openModalBrowser = function(name) {
-getJSON('http://avant.net/photos/json/'+name,
+getJSON('https://avant.net/photos/json/'+name,
 function(err, data) {
   if (err !== null) {
     console.log('Something went wrong: ' + err);
@@ -108,7 +108,7 @@ this.gallery = function(exid) {
   } else {
     console.log('Fetching json');
     var self = this;
-    getJSON('http://avant.net/photos/json',
+    getJSON('https://avant.net/photos/json',
     function(err, data) {
       if (err !== null) {
         console.log('Something went wrong: ' + err);
@@ -138,7 +138,7 @@ this.preload = function(statusid,statusmsg) {
   } else {
     console.log('Fetching json');
     var self = this;
-    getJSON('http://avant.net/photos/json',
+    getJSON('https://avant.net/photos/json',
     function(err, data) {
       if (err !== null) {
         console.log('Something went wrong: ' + err);

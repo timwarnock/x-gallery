@@ -36,18 +36,20 @@ else
 
   #############################################################################
   ## recreate thumbs
-  ## copy img_* to main image if missing
   #############################################################################
   cd $directory
-  for image in `/bin/ls img_*.JPG img_*.jpg 2>/dev/null`; do
-    nice convert -resize 260x260 $image small_$image
-    echo " * small_$image"
-    #
-    bigimg=${image:4}
-    if [ ! -e "$bigimg" ]; then
-      echo " .. writing $bigimg"
-      nice cp $image $bigimg
+  for image in `/bin/ls *.JPG *.jpg | grep -v img_`; do
+    if [ ! -e "img_$image" -o ! -e "small_img_$image" ]; then
+      nice convert -resize 800 $image img_$image
+      echo " * $image"
+      nice convert -resize 260x260 img_$image small_img_$image
+    else
+      echo " ** skipping $image"
     fi
   done
+
+  ## clear cache
+  rm -f ../cache/INDEX.json >/dev/null 2>&1
+  rm -f ../cache/${directory#/}".json" >/dev/null 2>&1
 
 fi
