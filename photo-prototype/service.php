@@ -8,8 +8,8 @@
 ################################################################################
 
 ## GLOBALS
-$album = $_REQUEST[album];
-$show = $_REQUEST[show];
+$album = $_REQUEST["album"];
+$show = $_REQUEST["show"];
 
 
 
@@ -52,7 +52,7 @@ function ls($__dir="./",$__pattern="*.*") {
 ################################################################################
 ## draw random preview image
 ################################################################################
-if ( preg_match("/([^\/]+)\.jpg/i", $_SERVER[PATH_INFO], $match) ) {
+if ( preg_match("/([^\/]+)\.jpg/i", $_SERVER["PATH_INFO"], $match) ) {
   $directory = $match[1];
   $image_array = ls("$directory/", "small_img_*.*");
   $previewImage = $image_array[ rand(0, count($image_array)-1 ) ];
@@ -83,12 +83,12 @@ if ( preg_match("/([^\/]+)\.jpg/i", $_SERVER[PATH_INFO], $match) ) {
 
 
 ## derive real_image
-if (isset($_REQUEST[album]) && isset($_REQUEST[show]) ) {
-  if (preg_match("/^img_([\w\d\._\-]+)$/", $_REQUEST[show], $match)) {
+if (isset($_REQUEST["album"]) && isset($_REQUEST["show"]) ) {
+  if (preg_match("/^img_([\w\d\._\-]+)$/", $_REQUEST["show"], $match)) {
      $real_image = $match[1];
   }
   if (! is_readable( "$album/$real_image" ) ) {
-    $real_image = $_REQUEST[show];
+    $real_image = $_REQUEST["show"];
   }
 }
 $img_icon = "<img src=\"/photos/jpg.gif\" alt=\"download\" title=\"download\" id=\"img_icon\" />";
@@ -98,7 +98,7 @@ $dltxt = "<span class=\"em\">(download)</span>";
 ################################################################################
 ## Draw single image FULL
 ################################################################################
-  if (isset($_REQUEST[album]) && isset($_REQUEST[show]) && isset($_REQUEST[redirect])) {
+  if (isset($_REQUEST["album"]) && isset($_REQUEST["show"]) && isset($_REQUEST["redirect"])) {
     header("Location: http://$_SERVER[HTTP_HOST]/photos/$album$real_image");
     exit;
 
@@ -107,7 +107,7 @@ $dltxt = "<span class=\"em\">(download)</span>";
 ################################################################################
 ## Draw single image FULL
 ################################################################################
-  } elseif (isset($_REQUEST[album]) && isset($_REQUEST[show]) && isset($_REQUEST[full])) {
+  } elseif (isset($_REQUEST["album"]) && isset($_REQUEST["show"]) && isset($_REQUEST["full"])) {
      $index_file = file_get_contents("$album/INDEX");
       if (preg_match("/^date: (.*)$/m", $index_file, $match)) {
         $date = $match[1];
@@ -137,7 +137,7 @@ ENDHTML;
 ################################################################################
 ## Draw single image PREVIEW
 ################################################################################
-   } elseif (isset($_REQUEST[album]) && isset($_REQUEST[show])) {
+   } elseif (isset($_REQUEST["album"]) && isset($_REQUEST["show"])) {
      $image_array = ls("$album", "img_*.*");
      $num_images = count($image_array);
      $current_key = array_search($show, $image_array);
@@ -176,7 +176,7 @@ ENDHTML;
 ################################################################################
 ## Draw album gallery view
 ################################################################################
-   } elseif (isset($_REQUEST[album])) {
+   } elseif (isset($_REQUEST["album"])) {
      $image_array = ls("$album", "img_*.*");
      $num_images = count($image_array);
      $index_file = file_get_contents("$album/INDEX");
@@ -213,8 +213,8 @@ ENDHTML;
 ## Draw Album Browser
 ################################################################################
   } else {
-    $sort = $_REQUEST[sort];
-    if ( !isset($_REQUEST[sort]) ) { $sort = "date"; }
+    $sort = $_REQUEST["sort"];
+    if ( !isset($_REQUEST["sort"]) ) { $sort = "date"; }
 
     ##
     ## $ALBUMS[ loc ][ date ][ subject ] = body

@@ -48,10 +48,10 @@ function getImages($dir) {
 
 
 ******************************************************************************** */
-if (isset($_REQUEST[album]))
-     $album = rtrim($_REQUEST[album], '/');
+if (isset($_REQUEST["album"]))
+     $album = rtrim($_REQUEST["album"], '/');
 
-if (isset($_REQUEST[album]) && !file_exists("cache/$album.json")) {
+if (isset($_REQUEST["album"]) && !file_exists("cache/$album.json")) {
      $image_array = getImages($album);
      $index_file = file_get_contents("$album/INDEX");
      if (preg_match("/^date: (.*)$/m", $index_file, $match)) {
@@ -114,7 +114,7 @@ if (! file_exists("cache/INDEX.json")) {
 
 
 
-if (isset($_REQUEST[album]) && file_exists("cache/$album.json")) {
+if (isset($_REQUEST["album"]) && file_exists("cache/$album.json")) {
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
   print( file_get_contents("cache/$album.json"));
